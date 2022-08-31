@@ -1,6 +1,5 @@
 package modelo
 
-import teste.somaReceiver
 
 class SistemaInterno {
     fun entra(admin: Autenticavel, senha: Int, retorno: () -> Unit = {}): Boolean{
