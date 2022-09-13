@@ -1,5 +1,7 @@
 package br.com.alura.forum.application.service
 
+import br.com.alura.forum.application.TopicoUseCase
+import br.com.alura.forum.application.dto.EditTopicRequest
 import br.com.alura.forum.application.dto.TopicoRequest
 import br.com.alura.forum.application.dto.TopicoResponse
 import br.com.alura.forum.application.mapper.FromDomainToResponse
@@ -13,20 +15,20 @@ class TopicoService(
     private val cursoService: CursoService,
     private val usuarioService: UsuarioService,
     private val fromDomainToResponse: FromDomainToResponse,
-) {
-    fun listarTopicos(): List<TopicoResponse> {
+): TopicoUseCase {
+    override fun getTopics(): List<TopicoResponse> {
         return topicos.map {
             fromDomainToResponse.convert(it)
         }
     }
 
-    fun buscarPorId(id: Long): TopicoResponse {
+    override fun getById(id: Long): TopicoResponse {
         return topicos.filter { topico -> topico.id == id  }.first().run {
             fromDomainToResponse.convert(this)
         }
     }
 
-    fun adicionarTopico(dto: TopicoRequest): Unit {
+    override fun addTopic(dto: TopicoRequest): Unit {
          topicos.add(
             Topico(
                 id = topicos.size.toLong(),
@@ -36,6 +38,19 @@ class TopicoService(
                 autor = usuarioService.buscarUsuario(dto.idAutor)
             )
         )
+    }
+
+    override fun updateTopic(editTopicRequest: EditTopicRequest) {
+        topicos.filter { topico: Topico -> topico.id == editTopicRequest.id }.first().let{
+            it.mensagem = editTopicRequest.mensagem;
+            it.titulo = editTopicRequest.titulo
+        }
+    }
+
+    override fun removeTopic(id: Long) {
+        topicos.filter { t: Topico -> t.id == id }.first().apply {
+            topicos.remove(this)
+        }
     }
 
 }
