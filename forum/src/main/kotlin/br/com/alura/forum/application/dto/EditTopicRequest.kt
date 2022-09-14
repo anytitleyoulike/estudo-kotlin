@@ -2,7 +2,6 @@ package br.com.alura.forum.application.dto
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
-import kotlin.math.min
 
 class EditTopicRequest {
     @NotBlank

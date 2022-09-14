@@ -35,7 +35,7 @@ class TopicoController(val useCase: TopicoUseCase) : TopicoApi {
         return ResponseEntity.ok(topicResponse)
     }
 
-    override fun deleteTopic(id: Long) {
+    override fun deleteTopic(id: Long):Unit {
         useCase.removeTopic(id)
     }
 }

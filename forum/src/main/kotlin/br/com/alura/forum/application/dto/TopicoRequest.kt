@@ -5,15 +5,19 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 class TopicoRequest(
-    @field:NotEmpty
-    @field:Size(min=5, max = 100)
+
+    @field:NotEmpty(message = "Cannot be empty")
+    @field:Size(min=5, max = 100, message = "Field must have a size between 5 and 100 characters")
     val titulo: String,
-    @field:NotEmpty
-    @Size(min=5, max=100)
+
+    @field:NotEmpty(message = "Cannot be empty")
+    @field:Size(min=5, max=100, message = "Field must have a size between 5 and 100 characters")
     val mensagem: String,
-    @NotNull
+
+    @field:NotNull
     val idCurso: Long,
-    @NotNull
+
+    @field:NotNull
     val idAutor: Long
 ) {
 

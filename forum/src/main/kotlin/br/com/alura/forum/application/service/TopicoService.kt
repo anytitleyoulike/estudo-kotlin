@@ -4,6 +4,7 @@ import br.com.alura.forum.application.TopicoUseCase
 import br.com.alura.forum.application.dto.EditTopicRequest
 import br.com.alura.forum.application.dto.TopicoRequest
 import br.com.alura.forum.application.dto.TopicResponse
+import br.com.alura.forum.application.exception.NotFoundException
 import br.com.alura.forum.application.mapper.FromDomainToResponse
 import br.com.alura.forum.application.model.Topico
 import org.springframework.stereotype.Service
@@ -22,8 +23,12 @@ class TopicoService(
     }
 
     override fun getById(id: Long): TopicResponse {
-        return topicos.filter { topico -> topico.id == id  }.first().run {
-            fromDomainToResponse.convert(this)
+        try {
+            return topicos.filter { topico -> topico.id == id  }.first().run {
+                fromDomainToResponse.convert(this)
+            }
+        } catch (exception: Exception) {
+          throw NotFoundException("Topic not found")
         }
     }
 
@@ -48,8 +53,12 @@ class TopicoService(
     }
 
     override fun removeTopic(id: Long) {
-        topicos.filter { t: Topico -> t.id == id }.first().apply {
-            topicos.remove(this)
+        try {
+            topicos.filter { t: Topico -> t.id == id }.first().apply {
+                topicos.remove(this)
+            }
+        } catch(exception: Exception) {
+            throw java.lang.Exception("Error when removing topic")
         }
     }
 
