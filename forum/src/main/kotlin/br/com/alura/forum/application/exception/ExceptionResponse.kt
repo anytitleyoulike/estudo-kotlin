@@ -1,6 +1,5 @@
 package br.com.alura.forum.application.exception
 
-import java.net.http.HttpResponse
 import java.time.LocalDateTime
 
 class ExceptionResponse (
