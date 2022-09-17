@@ -1,0 +1,67 @@
+package br.com.alura.forum.application.service
+
+import br.com.alura.forum.application.TopicUseCase
+import br.com.alura.forum.application.dto.EditTopicRequest
+import br.com.alura.forum.application.dto.TopicRequest
+import br.com.alura.forum.application.dto.TopicResponse
+import br.com.alura.forum.application.exception.NotFoundException
+import br.com.alura.forum.application.mapper.FromDomainToResponse
+import br.com.alura.forum.application.model.Topic
+import br.com.alura.forum.application.repository.TopicoRepository
+import org.springframework.stereotype.Service
+
+@Service
+class TopicService(
+    private val topicoRepository: TopicoRepository,
+    private val cursoService: CourseService,
+    private val userService: UserService,
+    private val fromDomainToResponse: FromDomainToResponse,
+): TopicUseCase {
+    override fun getTopics(): List<TopicResponse> {
+        val topicos = topicoRepository.findAll();
+        return topicos.map {
+            fromDomainToResponse.convert(it)
+        }
+    }
+
+    override fun getById(id: Long): TopicResponse {
+        try {
+            val topicos = topicoRepository.findById(id);
+            return topicos.filter { topico -> topico.id == id  }.get().run {
+                fromDomainToResponse.convert(this)
+            }
+        } catch (exception: Exception) {
+          throw NotFoundException("Topic not found")
+        }
+    }
+
+    override fun addTopic(dto: TopicRequest): TopicResponse {
+        val topic = topicoRepository.save(
+            Topic(
+                titulo = dto.titulo,
+                mensagem = dto.mensagem,
+                course = cursoService.buscarCurso(dto.idCurso),
+                autor = userService.buscarUsuario(dto.idAutor),
+            ),
+        )
+        return fromDomainToResponse.convert(topic)
+    }
+
+    override fun updateTopic(editTopicRequest: EditTopicRequest):TopicResponse {
+        val topico = topicoRepository.findById(editTopicRequest.id).get()
+        topico.mensagem = editTopicRequest.mensagem
+        topico.titulo = editTopicRequest.titulo
+        topicoRepository.save(topico)
+        return fromDomainToResponse.convert(topico)
+    }
+
+    override fun removeTopic(id: Long) {
+        try {
+        topicoRepository.deleteById(id);
+
+        } catch(exception: Exception) {
+            throw java.lang.Exception("Error when removing topic")
+        }
+    }
+
+}

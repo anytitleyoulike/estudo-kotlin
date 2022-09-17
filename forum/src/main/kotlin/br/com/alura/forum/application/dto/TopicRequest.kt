@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
-class TopicoRequest(
+class TopicRequest(
 
     @field:NotEmpty(message = "Cannot be empty")
     @field:Size(min=5, max = 100, message = "Field must have a size between 5 and 100 characters")

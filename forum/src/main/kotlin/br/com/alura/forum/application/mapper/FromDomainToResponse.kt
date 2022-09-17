@@ -1,18 +1,18 @@
 package br.com.alura.forum.application.mapper
 
 import br.com.alura.forum.application.dto.TopicResponse
-import br.com.alura.forum.application.model.Topico
+import br.com.alura.forum.application.model.Topic
 import org.springframework.stereotype.Component
 
 @Component
-class FromDomainToResponse:Mapper<Topico,TopicResponse> {
-    override fun convert(topico: Topico): TopicResponse {
+class FromDomainToResponse: Mapper<Topic,TopicResponse> {
+    override fun convert(topic: Topic): TopicResponse {
         return TopicResponse(
-            id = topico.id,
-            titulo = topico.titulo,
-            mensagem = topico.mensagem,
-            data = topico.dataCriacao,
-            status = topico.status
+            id = topic.id,
+            titulo = topic.titulo,
+            mensagem = topic.mensagem,
+            data = topic.dataCriacao,
+            status = topic.status
         )
     }
 }
