@@ -14,11 +14,11 @@ data class Topic(
     @ManyToOne
     val course: Course,
     @ManyToOne
-    val autor: Usuario,
+    val autor: Author,
     @Enumerated(value = EnumType.STRING) //saves constant name, number not included
     val status: TopicStatus = TopicStatus.NAO_RESPONDIDO,
     @OneToMany(mappedBy = "topic")
-    val respostas: List<Respostas> = listOf()
+    val respostas: List<Answer> = listOf()
 
 )
 

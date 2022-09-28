@@ -26,10 +26,10 @@ class ExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleServerError(exception: Exception, request: HttpServletRequest): ExceptionResponse{
         return ExceptionResponse(
-            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            error = HttpStatus.INTERNAL_SERVER_ERROR.name,
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
             message = exception.message,
-            path = request.servletPath,
+            path = request.servletPath
         )
     }
 

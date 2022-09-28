@@ -7,14 +7,14 @@ import br.com.alura.forum.application.dto.TopicResponse
 import br.com.alura.forum.application.exception.NotFoundException
 import br.com.alura.forum.application.mapper.FromDomainToResponse
 import br.com.alura.forum.application.model.Topic
-import br.com.alura.forum.adapter.out.repository.TopicRepository
+import br.com.alura.forum.application.repository.TopicRepository
 import org.springframework.stereotype.Service
 
 @Service
 class TopicService(
     private val topicRepository: TopicRepository,
-    private val cursoService: CourseService,
-    private val userService: UserService,
+    private val courseService: CourseService,
+    private val authorService: AuthorService,
     private val fromDomainToResponse: FromDomainToResponse,
 ): TopicUseCase {
     override fun getTopics(): List<TopicResponse> {
@@ -40,8 +40,8 @@ class TopicService(
             Topic(
                 titulo = dto.titulo,
                 mensagem = dto.mensagem,
-                course = cursoService.buscarCurso(dto.idCurso),
-                autor = userService.buscarUsuario(dto.idAutor),
+                course = courseService.buscarCurso(dto.idCurso),
+                autor = authorService.buscarUsuario(dto.idAutor),
             ),
         )
         return fromDomainToResponse.convert(topic)
